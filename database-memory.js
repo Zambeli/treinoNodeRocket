@@ -5,8 +5,24 @@ export class DatabaseMemory {
 
   // Set = array q n aceita valores duplicados, Map tem api mt mais legal
 
-  list() {
-    return Array.from(this.#videos.values());
+  list(search) {
+    return Array.from(this.#videos.entries())
+      .map((videoArray) => {
+        const id = videoArray[0];
+        const data = videoArray[1];
+
+        return {
+          id,
+          ...data,
+        };
+      })
+      .filter((video) => {
+        if (search) {
+          return video.title.includes(search);
+        }
+
+        return true;
+      });
   }
 
   create(video) {
